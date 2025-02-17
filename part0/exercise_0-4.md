@@ -9,7 +9,7 @@ sequenceDiagram
     server-->>browser: asks the browser to perform a new HTTP GET request to the address /notes
     deactivate server
 
-    Note right of server: the server creates a new note object, and adds it to an array called notes
+    Note right of browser: the server creates a new note object, and adds it to an array called notes
 
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
     activate server
