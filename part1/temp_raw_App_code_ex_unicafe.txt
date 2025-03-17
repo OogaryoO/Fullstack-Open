@@ -1,0 +1,110 @@
+// import { use, useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+//import './App.css'
+
+import { useState } from 'react'
+
+const Statistics = ({good, neutral, bad}) => {
+  return(
+    
+    <div>
+      <h2>
+        statistics
+      </h2>
+      <tr>
+        <td><StatisticLine text="good"></StatisticLine></td>
+        <td><StatisticLine value={good}></StatisticLine></td>
+      </tr>
+      <tr>
+        <td><StatisticLine text="neutral"></StatisticLine></td>
+        <td><StatisticLine value={neutral}></StatisticLine></td>
+      </tr>
+      <tr>
+        <td><StatisticLine text="bad"></StatisticLine></td>
+        <td><StatisticLine value={bad}></StatisticLine></td>
+      </tr>
+      <tr>
+        <td><StatisticLine text="all"></StatisticLine></td>
+        <td><StatisticLine value={good + neutral + bad}></StatisticLine></td>
+      </tr>
+      <tr>
+        <td><StatisticLine text="average"></StatisticLine></td>
+        <td><StatisticLine value={(good - bad) / (good + neutral + bad)}></StatisticLine></td>
+      </tr>
+      <tr>
+        <td><StatisticLine text="positive"></StatisticLine></td>
+        <td><StatisticLine value={good / (good + neutral + bad) * 100}></StatisticLine></td>
+        <td>%</td>  
+      </tr>
+    </div>
+  )
+}
+
+const StatisticLine = ({text, value}) => {
+  // if(text === "positive"){
+  //   return(
+  //     <div>
+  //       {text} {value} %
+  //   </div>  
+  //   )
+  // }
+  return(
+    <div>
+      {text} {value}
+    </div>
+  )
+}
+
+
+const History = ({good, neutral, bad}) => {
+  if(good + neutral + bad === 0){
+    return(
+      <div>
+        No feedback given
+      </div>
+    )
+  }
+
+  return(
+    <div>
+      <Statistics good={good} neutral={neutral} bad={bad}></Statistics>
+    </div>
+  )
+}
+
+
+const App = () => {
+  
+  // save clicks of each button to its own state
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+
+  const handleGoodFeedBack = () => {
+    setGood(good + 1)
+  }
+
+  const handleNeutralFeedBack = () => {
+    setNeutral(neutral + 1)
+  }
+
+  const handleBadFeedBack = () => {
+    setBad(bad + 1)
+  }
+
+  return (
+    <div>
+      <h2>
+        give feedback
+      </h2>
+      <button onClick={handleGoodFeedBack}>good</button>
+      <button onClick={handleNeutralFeedBack}>neutral</button>
+      <button onClick={handleBadFeedBack}>bad</button>
+      
+      <History good={good} neutral={neutral} bad={bad}></History>
+    </div>  
+  )
+}
+
+export default App
