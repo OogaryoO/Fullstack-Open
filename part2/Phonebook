@@ -1,0 +1,123 @@
+// import { use, useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+//import './App.css'
+
+import { useState } from 'react'
+
+const Filter = ({newFilter, handleFilterChange}) => {
+  return(
+    <div>
+      <form>
+      <div>
+        filter shown with
+        <input 
+          value={newFilter}
+          onChange={handleFilterChange}
+        />
+      </div>
+    </form>
+    </div>  
+  )
+  
+}
+
+const PersonForm = ({addPerson, newName, handleNameChange, newNumber, handlePhoneNumberChange}) => {
+  return (
+    <div>
+      <form  onSubmit={addPerson}>
+      <div>
+        name: 
+        <input 
+          value={newName}
+          onChange={handleNameChange}  
+        />
+      </div>
+      <div>
+        number:
+        <input
+          value={newNumber}
+          onChange={handlePhoneNumberChange}
+        />
+      </div>
+      <div>
+        <button type="submit">add</button>
+      </div>
+    </form>
+    </div>
+  )
+}
+
+const Persons = ({persons, newFilter}) => {
+  return (
+    <div>
+      <ul>
+        {persons.map(
+            (p) => {
+              return p.name.toLowerCase().includes(newFilter.toLowerCase()) ? <p key={p.id}>{p.name} {p.number}</p> : <p></p> 
+            }
+          )  
+        }
+      </ul>
+    </div>
+  )
+}
+
+const App = () => {
+  const [persons, setPersons] = useState([
+    { name: 'Arto Hellas', number: '040-123456', id: 1 },
+    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
+    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
+    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
+  ])
+  const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
+  const [newFilter, setNewFilter] = useState('')
+
+  const addPerson = (event) => {
+    event.preventDefault()
+    if(persons.find((item) => item.name === newName)){
+      alert(newName + ' is already added to phonebook')
+    }
+    else{
+      const personObject = {
+        name : newName,
+        number : newNumber,
+        id : persons.length + 1
+      }
+      setPersons(persons.concat(personObject))
+      setNewName('')
+      setNewNumber('')
+    }
+  }
+
+  const handleNameChange = (event) => {
+    setNewName(event.target.value)
+  }
+
+  const handlePhoneNumberChange = (event) => {
+    setNewNumber(event.target.value)
+  }
+
+  const handleFilterChange = (event) => {
+    setNewFilter(event.target.value)
+  }
+
+  return (
+    <div>
+      <h2>Phonebook</h2>
+      
+      <Filter newFilter={newFilter} handleFilterChange={handleFilterChange}/>
+      
+      <h2>add a new</h2>
+      
+      <PersonForm addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handlePhoneNumberChange={handlePhoneNumberChange}/>
+      
+      <h2>Numbers</h2>
+      
+      <Persons persons={persons} newFilter={newFilter}/>
+    </div>
+  )
+}
+
+export default App
